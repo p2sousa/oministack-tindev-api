@@ -11,24 +11,13 @@ const errorResponse = (message, statusCode = HttpStatus.BAD_REQUEST) => defaultR
   error: message,
 }, statusCode);
 
-class DevsController {
-  constructor(Devs) {
-    this.Devs = Devs;
+class DislikesController {
+  constructor(Dislike) {
+    this.Dislike = Dislike;
   }
 
   index() {
-    const devs = {
-      0: {
-        id: 1,
-        name: "dev1"
-      },
-      1: {
-        id: 2,
-        name: "dev2"
-      }
-    };
-
-    return defaultResponse(devs);
+    return defaultResponse({});  
   }
 
   create(data) {
@@ -36,4 +25,4 @@ class DevsController {
   }
 }
 
-export default DevsController;
+export default DislikesController;
