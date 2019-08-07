@@ -16,8 +16,23 @@ class DevsController {
     this.Devs = Devs;
   }
 
+  create(data) {
+    return defaultResponse(data);
+  }
+
   list() {
-    console.log('teste');
+    const devs = {
+      0: {
+        id: 1,
+        name: "dev1"
+      },
+      1: {
+        id: 2,
+        name: "dev2"
+      }
+    };
+
+    return defaultResponse(devs);
   }
 }
 
