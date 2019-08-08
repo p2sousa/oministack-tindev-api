@@ -13,7 +13,7 @@ export default (router) => {
 
   router.post('/devs', async (req, res) => {
     const DevController = new DevsController();
-    const response = await DevController.create();
+    const response = await DevController.create(req.body);
 
     res.status(response.statusCode);
     res.json(response.data);

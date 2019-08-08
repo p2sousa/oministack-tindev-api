@@ -2,7 +2,7 @@ import DevsController from '../../../src/controllers/DevsController';
 
 describe('Controllers: Devs', () => {
   describe('Get all devs: index()', () => {
-    it('should return a list of devs', () => {
+    it('should return a list of devs', async () => {
       const expectedResponse = {
         0: {
           id: 1,

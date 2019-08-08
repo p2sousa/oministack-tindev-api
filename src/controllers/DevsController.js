@@ -1,4 +1,6 @@
 import HttpStatus from 'http-status';
+import axios from 'axios';
+import Dev from '../models/Dev';
 
 // defines a response pattern
 const defaultResponse = (data, statusCode = HttpStatus.OK) => ({
@@ -12,8 +14,8 @@ const errorResponse = (message, statusCode = HttpStatus.BAD_REQUEST) => defaultR
 }, statusCode);
 
 class DevsController {
-  constructor(Devs) {
-    this.Devs = Devs;
+  constructor() {
+    this.endpointGitHub = 'https://api.github.com/users/';
   }
 
   index() {
@@ -37,9 +39,25 @@ class DevsController {
     }
   }
 
-  create(data) {
-    this.response = data;
-    return defaultResponse(this.response);
+  async create(data) {
+    const { username } = data;
+    const devExist = await Dev.findOne({ username });
+
+    if (devExist) {
+      return defaultResponse(devExist);
+    }
+
+    const responseApi = await axios.get(`${this.endpointGitHub}${username}`);
+    const { responseData } = responseApi.data;
+
+    const dev = await Dev.create({
+      username: responseData.username,
+      name: responseData.name,
+      bio: responseData.bio,
+      avatar: responseData.avatar_url,
+    });
+
+    return defaultResponse(dev, HttpStatus.CREATED);
   }
 }
 
