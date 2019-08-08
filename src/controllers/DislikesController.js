@@ -1,4 +1,5 @@
 import HttpStatus from 'http-status';
+import Dev from '../models/Dev';
 
 // defines a response pattern
 const defaultResponse = (data, statusCode = HttpStatus.OK) => ({
@@ -25,9 +26,22 @@ class DislikesController {
     }
   }
 
-  create(data) {
-    this.response = data;
-    return defaultResponse(this.response);
+  async create(req) {
+    const { user } = req.headers;
+    const { devId } = req.params;
+
+    const loggedDev = await Dev.findById(user);
+    const targetDev = await Dev.findById(devId);
+
+    if (!targetDev) {
+      return errorResponse({ error: 'Dev not exists' });
+    }
+
+    loggedDev.dislikes.push(targetDev._id);
+
+    await loggedDev.save();
+
+    return defaultResponse(loggedDev);
   }
 }
 

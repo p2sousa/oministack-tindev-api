@@ -18,29 +18,27 @@ class DevsController {
     this.endpointGitHub = 'https://api.github.com/users/';
   }
 
-  index() {
+  async index(req) {
     try {
-      const devs = {
-        0: {
-          id: 1,
-          name: 'dev1',
-        },
-        1: {
-          id: 2,
-          name: 'dev2',
-        },
-      };
+      const { user } = req.headers;
+      const loggedDev = await Dev.findById(user);
 
-      this.response = devs;
+      const users = await Dev.find({
+        $and: [
+          { _id: { $ne: user } },
+          { _id: { $nin: loggedDev.likes } },
+          { _id: { $nin: loggedDev.dislikes } },
+        ],
+      });
 
-      return defaultResponse(this.response);
+      return defaultResponse(users);
     } catch (error) {
       return errorResponse(error);
     }
   }
 
-  async create(data) {
-    const { username } = data;
+  async create(req) {
+    const { username } = req.body;
     const devExist = await Dev.findOne({ username });
 
     if (devExist) {
