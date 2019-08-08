@@ -17,22 +17,29 @@ class DevsController {
   }
 
   index() {
-    const devs = {
-      0: {
-        id: 1,
-        name: "dev1"
-      },
-      1: {
-        id: 2,
-        name: "dev2"
-      }
-    };
+    try {
+      const devs = {
+        0: {
+          id: 1,
+          name: 'dev1',
+        },
+        1: {
+          id: 2,
+          name: 'dev2',
+        },
+      };
 
-    return defaultResponse(devs);
+      this.response = devs;
+
+      return defaultResponse(this.response);
+    } catch (error) {
+      return errorResponse(error);
+    }
   }
 
   create(data) {
-    return defaultResponse(data);
+    this.response = data;
+    return defaultResponse(this.response);
   }
 }
 

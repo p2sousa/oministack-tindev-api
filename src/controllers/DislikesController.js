@@ -17,11 +17,17 @@ class DislikesController {
   }
 
   index() {
-    return defaultResponse({});  
+    this.response = {};
+    try {
+      return defaultResponse(this.response);
+    } catch (error) {
+      return errorResponse(error);
+    }
   }
 
   create(data) {
-    return defaultResponse(data);
+    this.response = data;
+    return defaultResponse(this.response);
   }
 }
 
