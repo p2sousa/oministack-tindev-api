@@ -38,7 +38,16 @@ class LikesController {
     }
 
     if (targetDev.likes.includes(loggedDev._id)) {
-      console.log('match');
+      const loggedSocket = req.connectedUsers[user];
+      const targetSocket = req.connectedUsers[devId];
+
+      if (loggedSocket) {
+        req.socket.to(loggedSocket).emit('match', targetDev);
+      }
+
+      if (targetSocket) {
+        req.socket.to(targetSocket).emit('match', loggedSocket);
+      }
     }
 
     loggedDev.likes.push(targetDev._id);
