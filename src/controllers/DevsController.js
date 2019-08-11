@@ -46,13 +46,13 @@ class DevsController {
     }
 
     const responseApi = await axios.get(`${this.endpointGitHub}${username}`);
-    const { responseData } = responseApi.data;
+    const { data: response } = await responseApi;
 
     const dev = await Dev.create({
-      username: responseData.username,
-      name: responseData.name,
-      bio: responseData.bio,
-      avatar: responseData.avatar_url,
+      username: response.login,
+      name: response.name,
+      bio: response.bio,
+      avatar: response.avatar_url,
     });
 
     return defaultResponse(dev, HttpStatus.CREATED);
